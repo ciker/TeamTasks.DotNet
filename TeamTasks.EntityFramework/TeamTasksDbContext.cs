@@ -10,12 +10,8 @@ namespace TeamTasks.EntityFramework
         public DbSet<ProjectStatus> ProjectStatuses { get; set; }
         public DbSet<TeamTask> TeamTasks { get; set; }
         public DbSet<TeamTaskStatus> TeamTaskStatuses { get; set; }
-
-        public TeamTasksDbContext() : base()
-        {
-        }
-
-        public TeamTasksDbContext(DbContextOptions options) : base(options)
+                
+        public TeamTasksDbContext(DbContextOptions<TeamTasksDbContext> options) : base(options)
         {
         }
     }

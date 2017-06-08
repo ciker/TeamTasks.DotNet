@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreLibrary.Linq", "CoreLib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreLibrary.EntityFramework", "CoreLibrary.EntityFramework\CoreLibrary.EntityFramework.csproj", "{B532E9BC-41CE-4E24-9681-0F8D062110BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamTasks.DevMigration", "TeamTasks.DevMigration\TeamTasks.DevMigration.csproj", "{6A7C30FB-6ADE-4FD5-9D85-3A9A6DA3DBB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{B532E9BC-41CE-4E24-9681-0F8D062110BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B532E9BC-41CE-4E24-9681-0F8D062110BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B532E9BC-41CE-4E24-9681-0F8D062110BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A7C30FB-6ADE-4FD5-9D85-3A9A6DA3DBB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A7C30FB-6ADE-4FD5-9D85-3A9A6DA3DBB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A7C30FB-6ADE-4FD5-9D85-3A9A6DA3DBB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A7C30FB-6ADE-4FD5-9D85-3A9A6DA3DBB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
