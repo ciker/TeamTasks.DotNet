@@ -35,5 +35,21 @@ namespace TeamTasks
         /// Info about the task
         /// </summary>
         string Description { get; set; }
+        
+        /// <summary>
+        /// TeamTask is now a tree hierarchy, but only for display and semantic purposes.
+        /// </summary>
+        int? ParentTeamTaskId { get; set; }
+
+        /// <summary>
+        /// Among its siblings, the importance of a task. Lesser value means higher priority.
+        /// It is nullable because a task may be independent of a project or has no siblings.
+        /// </summary>
+        int? Priority { get; set; }
+
+        /// <summary>
+        /// The status of a team task
+        /// </summary>
+        int TeamTaskStatusId { get; set; }
     }
 }

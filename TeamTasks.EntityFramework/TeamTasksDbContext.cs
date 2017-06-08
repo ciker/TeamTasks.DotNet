@@ -7,7 +7,9 @@ namespace TeamTasks.EntityFramework
     {
         public DbSet<Assignment> Assignments { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<ProjectStatus> ProjectStatuses { get; set; }
         public DbSet<TeamTask> TeamTasks { get; set; }
+        public DbSet<TeamTaskStatus> TeamTaskStatuses { get; set; }
 
         public TeamTasksDbContext() : base()
         {

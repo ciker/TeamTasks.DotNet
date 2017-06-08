@@ -1,6 +1,6 @@
 ﻿using CoreLibrary.EntityFramework;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace TeamTasks.EntityFramework
 {

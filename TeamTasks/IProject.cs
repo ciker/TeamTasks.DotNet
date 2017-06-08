@@ -29,5 +29,10 @@ namespace TeamTasks
         /// When the project is due
         /// </summary>
         DateTime? DueDate { get; set; }
+
+        /// <summary>
+        /// The status of a project
+        /// </summary>
+        int ProjectStatusId { get; set; }
     }
 }

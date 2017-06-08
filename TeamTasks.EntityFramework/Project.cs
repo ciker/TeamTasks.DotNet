@@ -18,5 +18,8 @@ namespace TeamTasks.EntityFramework
         public DateTime? DueDate { get; set; }
 
         public int Id { get; set; }
+
+        public int ProjectStatusId { get; set; }
+        public ProjectStatus ProjectStatus { get; set; }
     }
 }
