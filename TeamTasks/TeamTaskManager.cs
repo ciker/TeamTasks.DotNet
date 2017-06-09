@@ -64,7 +64,6 @@ namespace TeamTasks
             });
         }
 
-
         public virtual async Task<ManagerResult> AssignTaskAsync(TTeamTask teamTask, int assignorId, int? assigneeId,
             string description, IUserProvider userProvider)
         {
@@ -91,6 +90,28 @@ namespace TeamTasks
             }
 
             return new ManagerResult();
+        }
+
+        public virtual TeamTaskTreeViewModel GetTeamTaskTreeAsync(TTeamTask teamTask)
+        {
+            TeamTaskTreeViewModel ttdvm = new TeamTaskTreeViewModel()
+            {
+                Id = teamTask.Id,
+                Name = teamTask.Name,
+                Children = new List<TeamTaskTreeViewModel>(),
+                Status = GetTeamTaskStore().FindTeamTaskStatusByIdAsync(teamTask.TeamTaskStatusId).Result.Name
+            };
+
+            List<TTeamTask> immediateChildren = GetTeamTaskStore().GetQueryableTeamTasks()
+                .Where(tt => tt.ParentTeamTaskId == teamTask.Id)
+                .OrderBy(tt => tt.Priority).ToList();
+
+            immediateChildren.ForEach(childTeamTask =>
+            {
+                ttdvm.Children.Add(GetTeamTaskTreeAsync(childTeamTask));
+            });
+
+            return ttdvm;
         }
     }
 }

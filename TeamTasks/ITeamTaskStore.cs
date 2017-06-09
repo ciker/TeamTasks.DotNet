@@ -9,6 +9,7 @@ namespace TeamTasks
     {
         Task<IProject> FindProjectByIdAsync(int projectId);
         Task<IAssignment> FindAssignmentAsync(int teamTaskId, int assigneeId);
+        Task<ITeamTaskStatus> FindTeamTaskStatusByIdAsync(int teamTaskStatusId);
         Task CreateAssignmentAsync(int teamTaskId, int assignorId, int? assigneeId, string description);
         IQueryable<TTeamTask> GetQueryableTeamTasks();
     }
