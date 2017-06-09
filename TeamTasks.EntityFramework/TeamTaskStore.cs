@@ -37,6 +37,24 @@ namespace TeamTasks.EntityFramework
             return await db.Set<Project>().SingleOrDefaultAsync(p => p.Id == projectId);
         }
 
+        public async Task<ITeamTaskStatus> FindTeamTaskStatusByIdAsync(int teamTaskStatusId)
+        {
+            return await db.Set<TeamTaskStatus>().SingleOrDefaultAsync(tts => tts.Id == teamTaskStatusId);
+        }
+
+        public async Task<ITeamTaskStatus> FindTeamTaskStatusByNameAsync(string teamTaskStatusName)
+        {
+            return await db.Set<TeamTaskStatus>().SingleOrDefaultAsync(tts => tts.Name == teamTaskStatusName);
+        }
+        
+        public IQueryable<IAssignment> GetQueryableAssignments(string teamTaskStatusName)
+        {
+            if(!string.IsNullOrEmpty(teamTaskStatusName))
+                return db.Set<Assignment>().Where(a => a.TeamTask.TeamTaskStatus.Name == teamTaskStatusName);
+
+            return db.Set<Assignment>();
+        }
+
         public IQueryable<TeamTask> GetQueryableTeamTasks()
         {
             return db.Set<TeamTask>();

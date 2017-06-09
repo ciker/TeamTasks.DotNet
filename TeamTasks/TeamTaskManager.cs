@@ -113,5 +113,31 @@ namespace TeamTasks
 
             return ttdvm;
         }
+
+        public virtual ResultSet<AssignmentViewModel> GetAssignments(int assigneeId, string teamTaskStatusName, int page = 1, int pageSize = 10)
+        {
+            IQueryable<IAssignment> qAssignments = GetTeamTaskStore().GetQueryableAssignments(teamTaskStatusName)
+                .Where(a => a.AssigneeId.HasValue && a.AssigneeId.Value == assigneeId);
+
+
+            ResultSet<IAssignment> assignmentsRS = ResultSetHelper.GetResults<IAssignment, int>(qAssignments, page, pageSize);
+
+            return ResultSetHelper.Convert(assignmentsRS, assignment =>
+            {
+                TTeamTask teamTask = GetTeamTaskStore().FindByIdAsync(assignment.TeamTaskId).Result;
+
+                return new AssignmentViewModel
+                {
+                    Id = assignment.Id,
+                    Description = assignment.Description,
+                    DueDate = teamTask?.DueDate,
+                    StartDate = teamTask?.StartDate,
+                    TeamTaskDescription = teamTask?.Description ?? "",
+                    TeamTaskName = teamTask?.Name ?? "",
+                    TeamTaskStatus = GetTeamTaskStore().FindTeamTaskStatusByIdAsync(teamTask.TeamTaskStatusId).Result?.Name ?? ""
+                };
+            });                        
+        }
+
     }
 }
