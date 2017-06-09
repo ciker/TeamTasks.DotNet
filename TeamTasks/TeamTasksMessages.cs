@@ -7,5 +7,6 @@
         public static readonly string AssignorNotFound = "assignor-not-found";
         public static readonly string AssigneeNotFound = "assignee-not-found";
         public static readonly string TaskAlreadyAssignedToAssignee = "task-already-assigned-to-assignee";
+        public static readonly string ParentTeamTaskCannotBeDescendant = "parent-team-task-cannot-be-descendant";
     }
 }

@@ -46,6 +46,11 @@ namespace CoreLibrary
             }
             catch (NotImplementedException)
             {
+                ManagerResult logicCheckResult = OnCreateLogicCheck(entity);
+
+                if (!logicCheckResult.Success)
+                    return logicCheckResult;
+
                 await Store.CreateAsync(entity);
             }
             catch (Exception e)
@@ -81,6 +86,11 @@ namespace CoreLibrary
             }
             catch (NotImplementedException)
             {
+                ManagerResult logicCheckResult = OnCreateLogicCheck(entity);
+
+                if (!logicCheckResult.Success)
+                    return logicCheckResult;
+
                 await Store.UpdateAsync(entity);
             }
             catch (Exception e)

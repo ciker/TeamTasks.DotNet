@@ -1,5 +1,7 @@
 ﻿using CoreLibrary;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace TeamTasks
@@ -35,8 +37,33 @@ namespace TeamTasks
 
         public override ManagerResult OnUpdateLogicCheck(TTeamTask teamTask)
         {
-            return OnCreateLogicCheck(teamTask);
+            /* We shall assume that the teamTask.ParentTeamTaskId can be different from the original's.
+             * We just need to make sure that ParentTeamTaskId is NOT one of its descendant's IDs!
+             */
+            if (teamTask.ParentTeamTaskId.HasValue)
+            {
+                List<TTeamTask> descendants = new List<TTeamTask>();
+
+                GetDescendants(teamTask, descendants);
+
+                if (descendants.Any(tt => tt.Id == teamTask.ParentTeamTaskId))
+                    return new ManagerResult(TeamTasksMessages.ParentTeamTaskCannotBeDescendant);
+            }
+
+            return new ManagerResult();
         }
+
+        protected void GetDescendants(TTeamTask teamTask, List<TTeamTask> descendants)
+        {
+            List<TTeamTask> immediateChildren = GetTeamTaskStore().GetQueryableTeamTasks().Where(tt => tt.ParentTeamTaskId == teamTask.Id).ToList();
+            descendants.AddRange(immediateChildren);
+
+            immediateChildren.ForEach(childTeamTask =>
+            {
+                GetDescendants(childTeamTask, descendants);
+            });
+        }
+
 
         public virtual async Task<ManagerResult> AssignTaskAsync(TTeamTask teamTask, int assignorId, int? assigneeId,
             string description, IUserProvider userProvider)
