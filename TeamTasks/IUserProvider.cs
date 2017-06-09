@@ -6,5 +6,6 @@
     public interface IUserProvider
     {
         bool UserExists(int userId);
+        bool HasRole(int userId, string roleName);
     }
 }

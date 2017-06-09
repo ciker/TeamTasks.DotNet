@@ -55,3 +55,18 @@ identifier of the project.
 - **400**. `["invalid-start-and-due-dates"]`. When both `startDate` and `dueDate` are specified and the `dueDate` is
 set to an earlier date than `startDate`
 - **401**. `["unauthorized"]`. The requestor is not an administrator.
+
+## Deleting
+
+### Request
+```json
+Host: TBD
+Authoriztion: Bearer xklvj23813n201jn9vncJX...
+DELETE /api/project/{id}
+```
+`{id}` is the `id` of the project to be deleted.
+
+### Responses
+- **204**. Successful Deletion. No response body.
+- **400**. `["project-has-dependent-team-tasks"]`. Projects with associated tasks cannot be deleted.
+- **401**. `["unauthorized"]`. The requestor is not an administrator.

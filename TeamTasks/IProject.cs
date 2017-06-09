@@ -3,7 +3,7 @@ using System;
 
 namespace TeamTasks
 {
-    public interface IProject : IIdentifiable<int>
+    public interface IProject : IIdentifiable<int>, IDateSpanned
     {
         /// <summary>
         /// The name of the project. This must be unique across all projects.
@@ -19,17 +19,7 @@ namespace TeamTasks
         /// The user id of who created this project
         /// </summary>
         int CreatorId { get; set; }
-
-        /// <summary>
-        /// When the project is in effect
-        /// </summary>
-        DateTime? StartDate { get; set; }
-
-        /// <summary>
-        /// When the project is due
-        /// </summary>
-        DateTime? DueDate { get; set; }
-
+        
         /// <summary>
         /// The status of a project
         /// </summary>

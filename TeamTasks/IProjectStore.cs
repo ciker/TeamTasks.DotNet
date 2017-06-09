@@ -1,4 +1,5 @@
 ﻿using CoreLibrary;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace TeamTasks
@@ -7,5 +8,7 @@ namespace TeamTasks
         where TProject : class, IProject
     {
         Task<TProject> FindByNameAsync(string name);
+        Task<IProjectStatus> FindProjectStatusByNameAsync(string name);
+        IQueryable<ITeamTask> GetQueryableTeamTasks();
     }
 }

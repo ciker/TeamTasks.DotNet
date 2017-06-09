@@ -8,5 +8,9 @@
         public static readonly string AssigneeNotFound = "assignee-not-found";
         public static readonly string TaskAlreadyAssignedToAssignee = "task-already-assigned-to-assignee";
         public static readonly string ParentTeamTaskCannotBeDescendant = "parent-team-task-cannot-be-descendant";
+        public static readonly string ProjectStatusNotFound = "project-status-not-found";
+        public static readonly string ProjectStatusNotSpecified = "project-status-not-specified";
+        public static readonly string ProjectHasDependentTeamTasks = "project-has-dependent-team-tasks";
+        public static readonly string TaskStatusNotFound = "task-status-not-found";
     }
 }

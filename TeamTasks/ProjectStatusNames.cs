@@ -5,5 +5,6 @@
         public static readonly string Active = "active";
         public static readonly string Inactive = "inactive";
         public static readonly string Complete = "complete";
+        public static readonly string Dropped = "dropped";
     }
 }

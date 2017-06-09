@@ -20,9 +20,9 @@ namespace TeamTasks
 
         public override ManagerResult OnCreateLogicCheck(TTeamTask teamTask)
         {
-            if (teamTask.StartDate.HasValue && teamTask.DueDate.HasValue &&
-                teamTask.StartDate.Value > teamTask.DueDate.Value)
-                return new ManagerResult(TeamTasksMessages.InvalidStartAndDueDates);
+            var checkDateRes = teamTask.CheckDates();
+            if (!checkDateRes.Success)
+                return checkDateRes;
 
             if (teamTask.ProjectId.HasValue)
             {
@@ -118,7 +118,6 @@ namespace TeamTasks
         {
             IQueryable<IAssignment> qAssignments = GetTeamTaskStore().GetQueryableAssignments(teamTaskStatusName)
                 .Where(a => a.AssigneeId.HasValue && a.AssigneeId.Value == assigneeId);
-
 
             ResultSet<IAssignment> assignmentsRS = ResultSetHelper.GetResults<IAssignment, int>(qAssignments, page, pageSize);
 

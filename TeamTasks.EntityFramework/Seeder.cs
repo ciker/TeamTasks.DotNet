@@ -87,7 +87,8 @@ namespace TeamTasks.EntityFramework
             {
                 new ProjectStatus { Name = ProjectStatusNames.Active },
                 new ProjectStatus { Name = ProjectStatusNames.Complete },
-                new ProjectStatus { Name = ProjectStatusNames.Inactive }
+                new ProjectStatus { Name = ProjectStatusNames.Inactive },
+                new ProjectStatus { Name = ProjectStatusNames.Dropped }
             };
 
             projectStatuses.ForEach(ps =>

@@ -3,7 +3,7 @@ using System;
 
 namespace TeamTasks
 {
-    public interface ITeamTask : IIdentifiable<int>
+    public interface ITeamTask : IIdentifiable<int>, IDateSpanned
     {
         /// <summary>
         /// The name of the task. This is a unique field.
@@ -14,16 +14,6 @@ namespace TeamTasks
         /// When this record is given
         /// </summary>
         DateTime CreatedDate { get; set; }
-
-        /// <summary>
-        /// When the task is in effect
-        /// </summary>
-        DateTime? StartDate { get; set; }
-
-        /// <summary>
-        /// When the task is due
-        /// </summary>
-        DateTime? DueDate { get; set; }
 
         /// <summary>
         /// Which project this task belongs to. Nullable means a task can be created
