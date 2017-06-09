@@ -1,6 +1,8 @@
 ﻿using CoreLibrary.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using System;
+using System.Linq;
 
 namespace TeamTasks.EntityFramework
 {
@@ -33,6 +35,11 @@ namespace TeamTasks.EntityFramework
         public async Task<IProject> FindProjectByIdAsync(int projectId)
         {
             return await db.Set<Project>().SingleOrDefaultAsync(p => p.Id == projectId);
+        }
+
+        public IQueryable<TeamTask> GetQueryableTeamTasks()
+        {
+            return db.Set<TeamTask>();
         }
     }
 }

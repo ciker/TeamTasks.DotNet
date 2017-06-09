@@ -30,6 +30,26 @@ namespace TeamTasks.EntityFramework
                 await RM.CreateAsync(new TeamTasksRole { Name = "member" });
         }
 
+        private async Task CreateMemberUserAsync(string username, params string[] roleNames)
+        {
+            TeamTasksUser user = await UM.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                user = new TeamTasksUser
+                {
+                    UserName = username,
+                    Email = $"{username}@teamtasks.net",
+                    EmailConfirmed = true
+                };
+                var res = await UM.CreateAsync(user, "Aaa000$");
+                if (res.Succeeded)
+                {
+                    await UM.AddToRoleAsync(user, "member");
+                }
+            }
+        }
+
         public async Task CreateUsersAsync()
         {
             // The Admin User
@@ -50,6 +70,12 @@ namespace TeamTasks.EntityFramework
                     await UM.AddToRoleAsync(admin, "admin");
                 }
             }
+            
+            await CreateMemberUserAsync("user1");
+            await CreateMemberUserAsync("user2");
+            await CreateMemberUserAsync("user3");
+            await CreateMemberUserAsync("user4");
+            await CreateMemberUserAsync("user5");
         }
 
         public async Task InitializeDataAsync()
@@ -71,13 +97,13 @@ namespace TeamTasks.EntityFramework
 
             List<TeamTaskStatus> teamTaskStatuses = new List<TeamTaskStatus>
             {
-                new TeamTaskStatus { Name = TeamTaskStatusNames.Active},
-                new TeamTaskStatus { Name = TeamTaskStatusNames.Inactive}
+                new TeamTaskStatus { Name = TeamTaskStatusNames.Active },
+                new TeamTaskStatus { Name = TeamTaskStatusNames.Inactive }
             };
 
             teamTaskStatuses.ForEach(tts =>
             {
-
+                AddOrUpdateTeamTaskStatus(tts);
             });
         }
 
