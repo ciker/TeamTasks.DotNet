@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreLibrary.EntityFramework
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamTasks.DevMigration", "TeamTasks.DevMigration\TeamTasks.DevMigration.csproj", "{6A7C30FB-6ADE-4FD5-9D85-3A9A6DA3DBB7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamTasks.Docs", "TeamTasks.Docs\TeamTasks.Docs.csproj", "{852F93EB-802E-4CF5-B7A8-809754D9FF6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{6A7C30FB-6ADE-4FD5-9D85-3A9A6DA3DBB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A7C30FB-6ADE-4FD5-9D85-3A9A6DA3DBB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A7C30FB-6ADE-4FD5-9D85-3A9A6DA3DBB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{852F93EB-802E-4CF5-B7A8-809754D9FF6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{852F93EB-802E-4CF5-B7A8-809754D9FF6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{852F93EB-802E-4CF5-B7A8-809754D9FF6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{852F93EB-802E-4CF5-B7A8-809754D9FF6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

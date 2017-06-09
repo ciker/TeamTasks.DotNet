@@ -6,7 +6,7 @@ namespace TeamTasks
     public interface ITeamTask : IIdentifiable<int>
     {
         /// <summary>
-        /// The name of the task. This is NOT a unique field.
+        /// The name of the task. This is a unique field.
         /// </summary>
         string Name { get; set; }
 
