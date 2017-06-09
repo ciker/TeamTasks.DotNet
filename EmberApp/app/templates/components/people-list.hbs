@@ -1,0 +1,9 @@
+<ul>
+  {{#each people as |person|}}
+   <li>
+    {{#link-to "users.show" person}}
+      {{person.name}}
+    {{/link-to}}
+   </li>
+  {{/each}}
+</ul>
