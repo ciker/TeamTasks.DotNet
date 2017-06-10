@@ -61,28 +61,51 @@ namespace CoreLibrary
             return new ManagerResult();
         }
 
+        /// <summary>
+        /// This function is called only after the record to update was found
+        /// AND there is no duplicate violation.
+        /// </summary>
+        /// <param name="entity">The incoming object that contains the new values.</param>
+        /// <returns></returns>
         public virtual ManagerResult OnUpdateLogicCheck(T entity)
         {
             return new ManagerResult();
         }
 
+        /// <summary>
+        /// Function is called after all logic for updating is checked, right before
+        /// handing over the original (then with the updated values) to the store.
+        /// This is set virtual because not all managers will require editing (though
+        /// most will).
+        /// </summary>
+        /// <param name="original"></param>
+        /// <param name="entityWithNewValues"></param>
+        public virtual void OnUpdatePropertyValues(T original, T entityWithNewValues)
+        {
+        }
+
         public virtual async Task<ManagerResult> UpdateAsync(T entity)
         {
+            T recordToUpdate = await FindByIdAsync(entity.Id);
+
+            if (recordToUpdate == null)
+                return new ManagerResult(ManagerErrors.RecordNotFound);
+
             try
             {
-                T found = await FindUniqueAsync(entity);
-
-                if ((found != null) && (!found.Id.Equals(entity.Id)))
-                {
+                T possibleDuplicate = await FindUniqueAsync(entity);
+                
+                if ((possibleDuplicate != null) && (!possibleDuplicate.Id.Equals(recordToUpdate.Id)))
                     return new ManagerResult(ManagerErrors.DuplicateOnUpdate);
-                }
 
                 ManagerResult logicCheckResult = OnUpdateLogicCheck(entity);
 
                 if (!logicCheckResult.Success)
                     return logicCheckResult;
 
-                await Store.UpdateAsync(entity);
+                OnUpdatePropertyValues(recordToUpdate, entity);
+
+                await Store.UpdateAsync(recordToUpdate);
             }
             catch (NotImplementedException)
             {
@@ -91,7 +114,7 @@ namespace CoreLibrary
                 if (!logicCheckResult.Success)
                     return logicCheckResult;
 
-                await Store.UpdateAsync(entity);
+                await Store.UpdateAsync(recordToUpdate);
             }
             catch (Exception e)
             {

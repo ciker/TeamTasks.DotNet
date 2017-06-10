@@ -95,6 +95,14 @@ namespace TeamTasks
             return await base.UpdateAsync(project);
         }
 
+        public override void OnUpdatePropertyValues(TProject original, TProject entityWithNewValues)
+        {
+            original.DueDate = entityWithNewValues.DueDate;
+            original.Name = entityWithNewValues.Name;
+            original.ProjectStatusId = entityWithNewValues.ProjectStatusId;
+            original.StartDate = entityWithNewValues.StartDate;
+        }
+
         #endregion Update
 
         #region Delete

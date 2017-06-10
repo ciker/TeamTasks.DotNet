@@ -38,24 +38,9 @@ namespace CoreLibrary.EntityFramework
                 await DeleteAsync(entity);
             }
         }
-
-        protected virtual void ExcludePropertiesForUpdating(T entity) { }
-
+        
         public virtual async Task UpdateAsync(T entity)
-        {
-            T original = await FindByIdAsync(entity.Id);
-
-            if (original != null)
-            {
-                ExcludePropertiesForUpdating(original);
-
-                EntityEntry<T> dbEntry = db.Entry(original);
-                foreach (var property in dbEntry.Entity.GetType().GetTypeInfo().DeclaredProperties)
-                {
-                    property.SetValue(original, entity.GetType().GetProperty(property.Name).GetValue(entity));
-                }
-            }
-
+        {           
             await db.SaveChangesAsync();
         }
 

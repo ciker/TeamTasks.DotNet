@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamTasks.DevMigration", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamTasks.Docs", "TeamTasks.Docs\TeamTasks.Docs.csproj", "{852F93EB-802E-4CF5-B7A8-809754D9FF6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamTasks.Tests", "TeamTasks.Tests\TeamTasks.Tests.csproj", "{BBF0A07F-5452-4145-8E46-6C4E9EFF024F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{852F93EB-802E-4CF5-B7A8-809754D9FF6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{852F93EB-802E-4CF5-B7A8-809754D9FF6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{852F93EB-802E-4CF5-B7A8-809754D9FF6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBF0A07F-5452-4145-8E46-6C4E9EFF024F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBF0A07F-5452-4145-8E46-6C4E9EFF024F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBF0A07F-5452-4145-8E46-6C4E9EFF024F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBF0A07F-5452-4145-8E46-6C4E9EFF024F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
