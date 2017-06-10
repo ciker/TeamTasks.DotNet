@@ -1,17 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.IO;
 using TeamTasks.EntityFramework;
 
 namespace TeamTasks.Tests
 {
     class Program
     {
+        public static IConfigurationRoot Configuration { get; set; }
+
         static void Main(string[] args)
         {
+            var builder = new ConfigurationBuilder();
+
+            builder.SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+            Configuration = builder.Build();
+
             var services = new ServiceCollection();
 
-            string connectionString = "Data Source=files.digital-edge.biz;Initial Catalog=TeamTasks;User ID=devolved;Password=camp2nick";
+            string connectionString = Configuration["TeamTasksConnectionString"];
             services.AddDbContext<TeamTasksDbContext>(options =>
             {
                 options.UseSqlServer(connectionString, opts => {
