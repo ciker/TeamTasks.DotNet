@@ -17,7 +17,7 @@ ProjectStatus describes the state of progress of a project.
 - **Id (int)**. The unique identifier
 - **Name (string)**. The name of the project status. This must be unique.
 
-The possible name values are "active", "inactive", and "complete".
+The possible name values are "active", "inactive","complete", and "dropped".
 
 ## TeamTask
 A TeamTask is a specific job that needs to be completed. A project may contain multiple TeamTasks. Also,
