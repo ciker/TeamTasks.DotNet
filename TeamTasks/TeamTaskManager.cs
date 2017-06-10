@@ -53,6 +53,17 @@ namespace TeamTasks
             return new ManagerResult();
         }
 
+        public override void OnUpdatePropertyValues(TTeamTask original, TTeamTask entityWithNewValues)
+        {
+            original.Description = entityWithNewValues.Description;
+            original.DueDate = entityWithNewValues.DueDate;
+            original.Name = entityWithNewValues.Name;
+            if (!original.ProjectId.HasValue && entityWithNewValues.ProjectId.HasValue)
+                original.ProjectId = entityWithNewValues.ProjectId;
+            original.StartDate = entityWithNewValues.StartDate;
+            original.TeamTaskStatusId = entityWithNewValues.TeamTaskStatusId;
+        }
+
         protected void GetDescendants(TTeamTask teamTask, List<TTeamTask> descendants)
         {
             List<TTeamTask> immediateChildren = GetTeamTaskStore().GetQueryableTeamTasks().Where(tt => tt.ParentTeamTaskId == teamTask.Id).ToList();

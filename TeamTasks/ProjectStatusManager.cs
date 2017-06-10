@@ -19,5 +19,10 @@ namespace TeamTasks
         {
             return await GetProjectStatusStore().FindByNameAsync(matchAgainst.Name);
         }
+
+        public override void OnUpdatePropertyValues(TProjectStatus original, TProjectStatus entityWithNewValues)
+        {
+            original.Name = entityWithNewValues.Name;
+        }
     }
 }
