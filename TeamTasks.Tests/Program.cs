@@ -39,7 +39,9 @@ namespace TeamTasks.Tests
             TeamTasksDbContext db = provider.GetRequiredService<TeamTasksDbContext>();
 
             //ProjectStatusTests.CreateProjectStatus(db);
-            ProjectStatusTests.UpdateProjectStatus(db);
+            //ProjectStatusTests.UpdateProjectStatus(db);
+            //CryptopgraphyTests.TestCryptography();
+            CryptopgraphyTests.TestWebTokens();
 
             var dummy = 3;
             Console.WriteLine("Hello World!");

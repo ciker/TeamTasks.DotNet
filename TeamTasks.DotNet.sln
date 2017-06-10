@@ -25,6 +25,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamTasks.ResourceServer", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamTasks.AuthServer", "TeamTasks.AuthServer\TeamTasks.AuthServer.csproj", "{C38539A0-9984-4C83-886A-7A977D9786B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreLibrary.Cryptography", "CoreLibrary.Cryptography\CoreLibrary.Cryptography.csproj", "{24914E64-E938-43BD-A6F5-9663A6D8BCB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreLibrary.NetSecurity", "CoreLibrary.NetSecurity\CoreLibrary.NetSecurity.csproj", "{FA94C315-7D1E-4C66-8E27-7FC3E3972BB1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +79,14 @@ Global
 		{C38539A0-9984-4C83-886A-7A977D9786B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C38539A0-9984-4C83-886A-7A977D9786B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C38539A0-9984-4C83-886A-7A977D9786B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24914E64-E938-43BD-A6F5-9663A6D8BCB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24914E64-E938-43BD-A6F5-9663A6D8BCB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24914E64-E938-43BD-A6F5-9663A6D8BCB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24914E64-E938-43BD-A6F5-9663A6D8BCB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA94C315-7D1E-4C66-8E27-7FC3E3972BB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA94C315-7D1E-4C66-8E27-7FC3E3972BB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA94C315-7D1E-4C66-8E27-7FC3E3972BB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA94C315-7D1E-4C66-8E27-7FC3E3972BB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

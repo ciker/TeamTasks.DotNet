@@ -20,8 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CoreLibrary.Cryptography\CoreLibrary.Cryptography.csproj" />
     <ProjectReference Include="..\CoreLibrary.EntityFramework\CoreLibrary.EntityFramework.csproj" />
     <ProjectReference Include="..\CoreLibrary.Linq\CoreLibrary.Linq.csproj" />
+    <ProjectReference Include="..\CoreLibrary.NetSecurity\CoreLibrary.NetSecurity.csproj" />
     <ProjectReference Include="..\CoreLibrary\CoreLibrary.csproj" />
     <ProjectReference Include="..\TeamTasks.EntityFramework\TeamTasks.EntityFramework.csproj" />
     <ProjectReference Include="..\TeamTasks\TeamTasks.csproj" />
