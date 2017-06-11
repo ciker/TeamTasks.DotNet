@@ -43,10 +43,11 @@ namespace TeamTasks
             if (!userProvider.HasRole(requestorId, RoleNames.Administrator))
                 return new ManagerResult(ManagerErrors.Unauthorized);
 
-            IProjectStatus projectStatus = await GetProjectStore().FindProjectStatusByNameAsync(spvm.ProjectStatusName);
+            IProjectStatus projectStatus = await GetProjectStore().FindProjectStatusByNameAsync(
+                (string.IsNullOrEmpty(spvm.ProjectStatusName) ? ProjectStatusNames.Inactive : spvm.ProjectStatusName));
 
             if (projectStatus == null)
-                return new ManagerResult(TeamTasksMessages.ProjectStatusNotFound);
+                return new ManagerResult(TeamTasksMessages.ProjectStatusNotFound);            
 
             TProject newProject = new TProject();
             newProject.CreatorId = requestorId;
@@ -55,7 +56,14 @@ namespace TeamTasks
             newProject.ProjectStatusId = projectStatus.Id;
             newProject.StartDate = spvm.StartDate;
 
-            return await base.CreateAsync(newProject);
+            var baseCreateRes = await base.CreateAsync(newProject);
+
+            if (!baseCreateRes.Success)
+                return baseCreateRes;
+
+            spvm.Id = newProject.Id;
+
+            return new ManagerResult();
         }
 
         #endregion Creation
@@ -86,12 +94,17 @@ namespace TeamTasks
 
             if (!spvm.Id.HasValue)
                 return new ManagerResult(ManagerErrors.IdNotSpecified);
-
+           
             TProject project = await FindByIdAsync(spvm.Id.Value);
 
             if (project == null)
                 return new ManagerResult(ManagerErrors.RecordNotFound);
 
+            project.Name = spvm.Name;
+            project.StartDate = spvm.StartDate;
+            project.DueDate = spvm.DueDate;
+            project.ProjectStatusId = projectStatus.Id;
+            
             return await base.UpdateAsync(project);
         }
 

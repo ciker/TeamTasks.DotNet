@@ -6,9 +6,9 @@ the user name, user id, and roles are going to be encrypted into that token.
 ## Creation
 ### Request
 ```json
-POST /api/project
-Host: TBD
-Authoriztion: Bearer xklvj23813n201jn9vncJX...
+POST /api/projects HTTP/1.1
+Host: localhost:59835
+Authorization: Bearer xklvj23813n201jn9vncJX...
 
 {
     "name": "The Female Flixpress",
@@ -35,7 +35,7 @@ set to an earlier date than `startDate`
 ```json
 PUT /api/project
 Host: TBD
-Authoriztion: Bearer xklvj23813n201jn9vncJX...
+Authorization: Bearer xklvj23813n201jn9vncJX...
 
 {
     "id": 3,
@@ -61,7 +61,7 @@ set to an earlier date than `startDate`
 ### Request
 ```json
 Host: TBD
-Authoriztion: Bearer xklvj23813n201jn9vncJX...
+Authorization: Bearer xklvj23813n201jn9vncJX...
 DELETE /api/project/{id}
 ```
 `{id}` is the `id` of the project to be deleted.
