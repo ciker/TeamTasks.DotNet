@@ -55,6 +55,7 @@ identifier of the project.
 - **400**. `["invalid-start-and-due-dates"]`. When both `startDate` and `dueDate` are specified and the `dueDate` is
 set to an earlier date than `startDate`
 - **401**. `["unauthorized"]`. The requestor is not an administrator.
+- **404**. `["record-not-found"]`. The id specified does not exist.
 
 ## Deleting
 
@@ -70,3 +71,4 @@ DELETE /api/project/{id}
 - **204**. Successful Deletion. No response body.
 - **400**. `["project-has-dependent-team-tasks"]`. Projects with associated tasks cannot be deleted.
 - **401**. `["unauthorized"]`. The requestor is not an administrator.
+- **404**. `["record-not-found"]`. The id specified does not exist.

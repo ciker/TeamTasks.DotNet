@@ -11,6 +11,8 @@
         public static readonly string ProjectStatusNotFound = "project-status-not-found";
         public static readonly string ProjectStatusNotSpecified = "project-status-not-specified";
         public static readonly string ProjectHasDependentTeamTasks = "project-has-dependent-team-tasks";
-        public static readonly string TaskStatusNotFound = "task-status-not-found";
+        public static readonly string TeamTaskStatusNotFound = "task-status-not-found";
+        public static readonly string ParentTeamTaskNotFound = "parent-team-task-not-found";
+        public static readonly string InvalidProjectId = "invalid-project-id";
     }
 }

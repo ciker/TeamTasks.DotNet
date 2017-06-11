@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TeamTasks
 {
     public class TeamTaskManager<TTeamTask> : ManagerBase<TTeamTask, int>
-        where TTeamTask : class, ITeamTask
+        where TTeamTask : class, ITeamTask, new()
     {
         public TeamTaskManager(ITeamTaskStore<TTeamTask> store) : base(store)
         {
@@ -16,6 +16,43 @@ namespace TeamTasks
         protected ITeamTaskStore<TTeamTask> GetTeamTaskStore()
         {
             return (ITeamTaskStore<TTeamTask>)Store;
+        }
+
+        #region Creation
+
+        public override Task<ManagerResult> CreateAsync(TTeamTask entity)
+        {
+            throw new NotSupportedException();
+        }
+
+        public virtual async Task<ManagerResult> CreateAsync(SaveTeamTaskViewModel sttvm, int requestorId, IUserProvider userProvider)
+        {
+            if (!userProvider.HasRole(requestorId, RoleNames.Administrator))
+                return new ManagerResult(ManagerErrors.Unauthorized);
+
+            ITeamTaskStatus teamTaskStatus = await GetTeamTaskStore().FindTeamTaskStatusByNameAsync(
+                (string.IsNullOrEmpty(sttvm.TeamTaskStatusName) ? ProjectStatusNames.Inactive : sttvm.TeamTaskStatusName));
+
+            if (teamTaskStatus == null)
+                return new ManagerResult(TeamTasksMessages.TeamTaskStatusNotFound);
+
+            TTeamTask newTeamTask = new TTeamTask();
+            newTeamTask.Description = sttvm.Description;
+            newTeamTask.DueDate = sttvm.DueDate;
+            newTeamTask.Name = sttvm.Name;
+            newTeamTask.ParentTeamTaskId = sttvm.ParentTeamTaskId;
+            newTeamTask.ProjectId = sttvm.ProjectId;
+            newTeamTask.StartDate = sttvm.StartDate;
+            newTeamTask.TeamTaskStatusId = teamTaskStatus.Id;
+
+            var baseCreateRes = await base.CreateAsync(newTeamTask);
+
+            if (!baseCreateRes.Success)
+                return baseCreateRes;
+
+            sttvm.Id = newTeamTask.Id;
+
+            return new ManagerResult();
         }
 
         public override ManagerResult OnCreateLogicCheck(TTeamTask teamTask)
@@ -32,8 +69,34 @@ namespace TeamTasks
                     return new ManagerResult(TeamTasksMessages.ProjectNotFound);
             }
 
+            if (teamTask.ParentTeamTaskId.HasValue)
+            {
+                // The parent team task must exist.
+                TTeamTask parentTeamTask = GetTeamTaskStore().FindByIdAsync(teamTask.ParentTeamTaskId.Value).Result;
+
+                if (parentTeamTask == null)
+                    return new ManagerResult(TeamTasksMessages.ParentTeamTaskNotFound);
+
+                List<TTeamTask> descendants = new List<TTeamTask>();
+
+                GetDescendants(teamTask, descendants);
+
+                if (descendants.Any(tt => tt.Id == teamTask.ParentTeamTaskId))
+                    return new ManagerResult(TeamTasksMessages.ParentTeamTaskCannotBeDescendant);
+
+                if (teamTask.ProjectId.HasValue)
+                {
+                    /* The incoming team task's project MUST MATCH the parent team task's project!
+                     */
+                    if (parentTeamTask.ProjectId != teamTask.ProjectId)
+                        return new ManagerResult(TeamTasksMessages.InvalidProjectId);
+                }
+            }
+
             return new ManagerResult();
         }
+
+        #endregion Creation
 
         public override ManagerResult OnUpdateLogicCheck(TTeamTask teamTask)
         {
@@ -62,7 +125,8 @@ namespace TeamTasks
                 original.ProjectId = entityWithNewValues.ProjectId;
             original.StartDate = entityWithNewValues.StartDate;
             original.TeamTaskStatusId = entityWithNewValues.TeamTaskStatusId;
-        }
+            original.ParentTeamTaskId = entityWithNewValues.ParentTeamTaskId;
+         }
 
         protected void GetDescendants(TTeamTask teamTask, List<TTeamTask> descendants)
         {

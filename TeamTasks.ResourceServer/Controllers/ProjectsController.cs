@@ -18,8 +18,8 @@ namespace TeamTasks.ResourceServer.Controllers
     public class ProjectsController : Controller
     {
         private TeamTasksDbContext db { get; set; }
-        private ProjectManager<Project> projectManager;
-        private UserManager<TeamTasksUser> userManager;
+        private ProjectManager<Project> projectManager { get; set; }
+        private UserManager<TeamTasksUser> userManager { get; set; }
 
         public ProjectsController(TeamTasksDbContext context, UserManager<TeamTasksUser> userManager)
         {
