@@ -1,21 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using TeamTasks.EntityFramework;
+using CoreLibrary.Cryptography;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
+using CoreLibrary.ResourceServer;
 
 namespace TeamTasks.ResourceServer
 {
     public class Startup
     {
+        public IConfigurationRoot Configuration { get; }
+
+        public Startup(IHostingEnvironment env)
+        {
+            var builder = new ConfigurationBuilder();
+
+            builder.SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+
+            services.AddMvcCore().AddJsonFormatters(setupAction => {
+                setupAction.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                setupAction.DefaultValueHandling = DefaultValueHandling.Ignore;
+                setupAction.NullValueHandling = NullValueHandling.Ignore;
+            });
+
+            string connectionString = Configuration["TeamTasksConnectionString"];
+            services.AddDbContext<TeamTasksDbContext>(options =>
+            {
+                options.UseSqlServer(connectionString, opts => {
+                    opts.UseRowNumberForPaging();
+                });
+            });
+
+            services.AddIdentity<TeamTasksUser, TeamTasksRole>()
+                .AddEntityFrameworkStores<TeamTasksDbContext, int>()
+                .AddDefaultTokenProviders();
+                       
+            services.AddSingleton<ICrypter, Crypt>();
+
+            services.AddCors();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -27,6 +68,23 @@ namespace TeamTasks.ResourceServer
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(options =>
+            {
+                options.AllowAnyOrigin();
+                options.AllowAnyMethod();
+                options.AllowAnyHeader();
+            });
+
+            /* Resource Server Middleware goes here
+             */
+            ResourceServerOptions rsOptions = new ResourceServerOptions();
+            rsOptions.CryptionKey = Configuration["CryptionKey"];
+            rsOptions.Issuer = "FlixReseller Issuer";
+
+            app.UseResourceServerMiddleware(rsOptions);
+
+            app.UseMvc();
 
             app.Run(async (context) =>
             {
