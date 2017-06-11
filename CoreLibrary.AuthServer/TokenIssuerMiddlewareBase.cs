@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CoreLibrary.AuthServer
@@ -94,12 +93,12 @@ namespace CoreLibrary.AuthServer
                 {
                     context.Response.StatusCode = StatusCodes.Status400BadRequest;
                     await context.Response.WriteAsync("invalid-content-type");
+                    return;
                 }
 
                 try
                 {
                     AuthServerRequest authRequest = CreateAuthServerRequestObject(context.Request);
-
 
                     // Now, we have to investigate authRequest
                     if (authRequest.GrantType == "password") // resource owner
@@ -123,7 +122,7 @@ namespace CoreLibrary.AuthServer
 
                     // Now, we construct the response
                     await WriteResponseAsync(authRequest, _options.Issuer, context.Response, additionalClaimsProvider);
-
+                    return;
 
                 }
                 catch (Exception e)

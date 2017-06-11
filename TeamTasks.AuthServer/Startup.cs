@@ -1,9 +1,15 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CoreLibrary.AuthServer;
+using CoreLibrary.Cryptography;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using TeamTasks.AuthServer.Providers;
+using TeamTasks.EntityFramework;
 
 namespace TeamTasks.AuthServer
 {
@@ -28,8 +34,28 @@ namespace TeamTasks.AuthServer
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = Configuration["TeamTasksConnectionString"];
+            services.AddDbContext<TeamTasksDbContext>(options =>
+            {
+                options.UseSqlServer(connectionString, opts => {
+                    opts.UseRowNumberForPaging();
+                });
+            });
 
-            var dummy = 3;
+            services.AddIdentity<TeamTasksUser, TeamTasksRole>()
+                .AddEntityFrameworkStores<TeamTasksDbContext, int>()
+                .AddDefaultTokenProviders();
+
+            services.AddTransient<ICredentialsProvider, SimpleCredentialsProvider>();
+            services.AddTransient<IAdditionalClaimsProvider, AdditionalClaimsProvider>();
+            services.AddSingleton<ICrypter, Crypt>();
+
+            services.AddCors();
+
+            services.AddMvcCore().AddJsonFormatters(setupAction => {
+                setupAction.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                setupAction.DefaultValueHandling = DefaultValueHandling.Ignore;
+                setupAction.NullValueHandling = NullValueHandling.Ignore;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,10 +68,20 @@ namespace TeamTasks.AuthServer
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Run(async (context) =>
+            app.UseCors(options =>
             {
-                await context.Response.WriteAsync("Hello World!");
+                options.AllowAnyOrigin();
+                options.AllowAnyMethod();
+                options.AllowAnyHeader();
             });
+
+            TokenIssuerOptions tokenIssuerOptions = new TokenIssuerOptions();
+            tokenIssuerOptions.Issuer = "FlixReseller Issuer";
+            tokenIssuerOptions.CryptionKey = Configuration["CryptionKey"];
+            
+            app.UseTokenIssuerMiddleware<TeamTasksTokenIssuerMiddleware, TeamTasksAuthServerResponse>(tokenIssuerOptions);
+
+            app.UseMvc();
         }
     }
 }
