@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CoreLibrary.Cryptography;
+using CoreLibrary.ResourceServer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
-using TeamTasks.EntityFramework;
-using CoreLibrary.Cryptography;
-using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
-using CoreLibrary.ResourceServer;
+using Newtonsoft.Json.Serialization;
+using System.Security.Claims;
+using TeamTasks.EntityFramework;
+using TeamTasks.ResourceServer.Utils;
 
 namespace TeamTasks.ResourceServer
 {
@@ -52,10 +54,16 @@ namespace TeamTasks.ResourceServer
             services.AddIdentity<TeamTasksUser, TeamTasksRole>()
                 .AddEntityFrameworkStores<TeamTasksDbContext, int>()
                 .AddDefaultTokenProviders();
-                       
-            services.AddSingleton<ICrypter, Crypt>();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(AuthorizePolicyNames.UsernameRequired, policy => policy.RequireAssertion(context => { return context.User.HasClaim(claim => claim.Type == ClaimTypes.Name); }));
+            });
 
             services.AddCors();
+
+            services.AddSingleton<ICrypter, Crypt>();
+
 
         }
 

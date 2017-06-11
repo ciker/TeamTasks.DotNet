@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TeamTasks.EntityFramework;
 
-namespace TeamTasks.ResourceServer.Extensions
+namespace TeamTasks.ResourceServer.Utils
 {
     public static class ControllerExtensions
     {

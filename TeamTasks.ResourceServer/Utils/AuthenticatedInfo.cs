@@ -1,4 +1,4 @@
-﻿namespace TeamTasks.ResourceServer.Extensions
+﻿namespace TeamTasks.ResourceServer.Utils
 {
     public class AuthenticatedInfo
     {
