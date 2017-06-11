@@ -92,7 +92,8 @@ namespace CoreLibrary.AuthServer
                 if (context.Request.ContentType != "application/x-www-form-urlencoded")
                 {
                     context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                    await context.Response.WriteAsync("invalid-content-type");
+                    context.Response.ContentType = "application/json;charset=utf-8";
+                    await context.Response.WriteAsync("[\"invalid-content-type\"]");
                     return;
                 }
 
@@ -106,7 +107,8 @@ namespace CoreLibrary.AuthServer
                         if (!(await credentialsProvider.AreUserCredentialsValidAsync(authRequest.Username, authRequest.Password)))
                         {
                             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                            await context.Response.WriteAsync(AuthServerMessages.InvalidUserCredentials);
+                            context.Response.ContentType = "application/json;charset=utf-8";
+                            await context.Response.WriteAsync($"[\"{AuthServerMessages.InvalidUserCredentials}\"]");
                             return;
                         }
                     }
@@ -115,7 +117,8 @@ namespace CoreLibrary.AuthServer
                         if (!(await credentialsProvider.AreClientCredentialsValidAsync(authRequest.ClientId, authRequest.ClientSecret)))
                         {
                             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                            await context.Response.WriteAsync(AuthServerMessages.InvalidUserCredentials);
+                            context.Response.ContentType = "application/json;charset=utf-8";
+                            await context.Response.WriteAsync($"[\"{AuthServerMessages.InvalidUserCredentials}\"]");
                             return;
                         }
                     }
@@ -128,7 +131,9 @@ namespace CoreLibrary.AuthServer
                 catch (Exception e)
                 {
                     context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                    await context.Response.WriteAsync(e.Message);
+                    context.Response.ContentType = "application/json;charset=utf-8";
+                    await context.Response.WriteAsync($"[\"{e.Message}\"]");
+                    return;
                 }
             }
 

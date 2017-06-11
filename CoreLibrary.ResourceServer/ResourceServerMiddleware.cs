@@ -30,25 +30,30 @@ namespace CoreLibrary.ResourceServer
                 if (values.Length != 2)
                 {
                     context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    context.Response.ContentType = "application/json;charset=utf-8";
+                    await context.Response.WriteAsync($"[\"{ResourceServerMessages.InvalidAuthorizationHeader}\"]");
                     return;
                 }
 
                 if (values.First() != "Bearer")
                 {
                     context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    context.Response.ContentType = "application/json;charset=utf-8";
+                    await context.Response.WriteAsync($"[\"{ResourceServerMessages.AuthorizationBearerRequired}\"]");
                     return;
                 }
 
                 try
                 {
-
                     string webTokenJsonString = _crypter.Decrypt(values[1], _resourceServerOptions.CryptionKey);
                     WebToken webToken = JsonConvert.DeserializeObject<WebToken>(webTokenJsonString);
 
                     if (webToken.Issuer != _resourceServerOptions.Issuer)
                     {
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        await context.Response.WriteAsync("issuers-do-not-match");
+                        context.Response.ContentType = "application/json;charset=utf-8";
+                        await context.Response.WriteAsync($"[\"{ResourceServerMessages.IssuersDoNotMatch}\"]");
+                        return;
                     }
 
                     DateTime tokenExpiration = webToken.CreatedDate.AddDays(_resourceServerOptions?.TokenDurationInDays ?? 14);
@@ -56,7 +61,9 @@ namespace CoreLibrary.ResourceServer
                     if (DateTime.Now > tokenExpiration)
                     {
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        await context.Response.WriteAsync("token-expired");
+                        context.Response.ContentType = "application/json;charset=utf-8";
+                        await context.Response.WriteAsync($"[\"{ResourceServerMessages.TokenExpired}\"]");
+                        return;
                     }
 
                     // Now, we have to write the claims to the ClaimsPrincipal!
@@ -64,11 +71,10 @@ namespace CoreLibrary.ResourceServer
                 }
                 catch (Exception e)
                 {
-                    var dummy2 = 45;
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    await context.Response.WriteAsync($"{e.Message} {e.InnerException?.Message ?? "no inner exception"}");
+                    context.Response.ContentType = "application/json;charset=utf-8";
+                    await context.Response.WriteAsync($"[\"{e.Message}\"]");
                 }
-
             }
 
             await _next.Invoke(context);
