@@ -76,14 +76,7 @@ namespace TeamTasks
 
                 if (parentTeamTask == null)
                     return new ManagerResult(TeamTasksMessages.ParentTeamTaskNotFound);
-
-                List<TTeamTask> descendants = new List<TTeamTask>();
-
-                GetDescendants(teamTask, descendants);
-
-                if (descendants.Any(tt => tt.Id == teamTask.ParentTeamTaskId))
-                    return new ManagerResult(TeamTasksMessages.ParentTeamTaskCannotBeDescendant);
-
+                               
                 if (teamTask.ProjectId.HasValue)
                 {
                     /* The incoming team task's project MUST MATCH the parent team task's project!
@@ -100,6 +93,18 @@ namespace TeamTasks
 
         public override ManagerResult OnUpdateLogicCheck(TTeamTask teamTask)
         {
+            var checkDateRes = teamTask.CheckDates();
+            if (!checkDateRes.Success)
+                return checkDateRes;
+
+            if (teamTask.ProjectId.HasValue)
+            {
+                IProject project = GetTeamTaskStore().FindProjectByIdAsync(teamTask.ProjectId.Value).Result;
+
+                if (project == null)
+                    return new ManagerResult(TeamTasksMessages.ProjectNotFound);
+            }
+
             /* We shall assume that the teamTask.ParentTeamTaskId can be different from the original's.
              * We just need to make sure that ParentTeamTaskId is NOT one of its descendant's IDs!
              */
@@ -167,7 +172,7 @@ namespace TeamTasks
             return new ManagerResult();
         }
 
-        public virtual TeamTaskTreeViewModel GetTeamTaskTreeAsync(TTeamTask teamTask)
+        public virtual TeamTaskTreeViewModel GetTeamTaskTree(TTeamTask teamTask)
         {
             TeamTaskTreeViewModel ttdvm = new TeamTaskTreeViewModel()
             {
@@ -183,10 +188,19 @@ namespace TeamTasks
 
             immediateChildren.ForEach(childTeamTask =>
             {
-                ttdvm.Children.Add(GetTeamTaskTreeAsync(childTeamTask));
+                ttdvm.Children.Add(GetTeamTaskTree(childTeamTask));
             });
 
             return ttdvm;
+        }
+
+        public virtual TeamTaskTreeViewModel GetTeamTaskTree(int id)
+        {
+            TTeamTask teamTask = GetTeamTaskStore().FindByIdAsync(id).Result;
+            if (teamTask != null)
+                return GetTeamTaskTree(teamTask);
+
+            return null;
         }
 
         public virtual ResultSet<AssignmentViewModel> GetAssignments(int assigneeId, string teamTaskStatusName, int page = 1, int pageSize = 10)

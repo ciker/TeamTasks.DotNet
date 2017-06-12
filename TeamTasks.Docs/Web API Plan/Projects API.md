@@ -1,7 +1,6 @@
 ﻿# Projects Web API Calls
 
-At this time, we have not yet developed how to obtain a token for the user. All we need to know at this point is that
-the user name, user id, and roles are going to be encrypted into that token.
+See the Authentication API document for information on how to obtain the Bearer token.
 
 ## Creation
 ### Request
@@ -9,6 +8,7 @@ the user name, user id, and roles are going to be encrypted into that token.
 POST /api/projects HTTP/1.1
 Host: localhost:59835
 Authorization: Bearer xklvj23813n201jn9vncJX...
+Content-Type: application/json;charset=utf-8
 
 {
     "name": "The Female Flixpress",
@@ -33,9 +33,10 @@ set to an earlier date than `startDate`
 
 ### Request
 ```json
-PUT /api/project
-Host: TBD
+PUT /api/project HTTP/1.1
+Host: localhost:59835
 Authorization: Bearer xklvj23813n201jn9vncJX...
+Content-Type: application/json;charset=utf-8
 
 {
     "id": 3,
@@ -50,7 +51,6 @@ Authorization: Bearer xklvj23813n201jn9vncJX...
 
 ### Responses
 - **200**. Succesful updating, no response body.
-identifier of the project.
 - **400**. `["duplicate-on-update"]`. Another project other than itself with the same name already exists.
 - **400**. `["invalid-start-and-due-dates"]`. When both `startDate` and `dueDate` are specified and the `dueDate` is
 set to an earlier date than `startDate`
@@ -61,9 +61,10 @@ set to an earlier date than `startDate`
 
 ### Request
 ```json
-Host: TBD
+DELETE /api/project/{id} HTTP/1.1
+Host: localhost:59835
 Authorization: Bearer xklvj23813n201jn9vncJX...
-DELETE /api/project/{id}
+Content-Type: application/json;charset=utf-8
 ```
 `{id}` is the `id` of the project to be deleted.
 

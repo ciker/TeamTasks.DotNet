@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using TeamTasks.ResourceServer.Utils;
 using TeamTasks.ResourceServer.Provider;
+using CoreLibrary;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -39,6 +40,19 @@ namespace TeamTasks.ResourceServer.Controllers
                 return BadRequest(res.Errors);
 
             return StatusCode(201, new { id = sttvm.Id });
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        [Route("tree/{id}")]
+        public IActionResult GetTeamTaskTreeAsync(int id)
+        {
+            TeamTaskTreeViewModel tttvm = teamTaskManager.GetTeamTaskTree(id);
+
+            if (tttvm == null)
+                return NotFound($"[\"{ManagerErrors.RecordNotFound}\"]");
+
+            return Ok(tttvm);
         }
     }
 }
