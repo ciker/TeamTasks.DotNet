@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace CoreLibrary
 {
-    public class ManagerBase<T, TKey>
+    public abstract class ManagerBase<T, TKey>
         where T : class, IIdentifiable<TKey>
     {
         protected IAsyncStore<T, TKey> Store { get; set; }
@@ -80,9 +80,7 @@ namespace CoreLibrary
         /// </summary>
         /// <param name="original"></param>
         /// <param name="entityWithNewValues"></param>
-        public virtual void OnUpdatePropertyValues(T original, T entityWithNewValues)
-        {
-        }
+        public abstract void OnUpdatePropertyValues(T original, T entityWithNewValues);
 
         public virtual async Task<ManagerResult> UpdateAsync(T entity)
         {
