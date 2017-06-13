@@ -109,10 +109,12 @@ namespace CoreLibrary
             }
             catch (NotImplementedException)
             {
-                ManagerResult logicCheckResult = OnCreateLogicCheck(entity);
+                ManagerResult logicCheckResult = OnUpdateLogicCheck(entity);
 
                 if (!logicCheckResult.Success)
                     return logicCheckResult;
+
+                OnUpdatePropertyValues(recordToUpdate, entity);
 
                 await Store.UpdateAsync(recordToUpdate);
             }
